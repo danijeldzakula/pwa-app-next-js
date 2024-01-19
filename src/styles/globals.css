@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply p-4;
+}
+
+main {
+  @apply py-8;
+}
