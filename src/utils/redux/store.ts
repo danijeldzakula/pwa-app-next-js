@@ -3,6 +3,7 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer } from 'redux-persist';
 import counterSlice from "./feature/counterSlice";
 import notesSlice from "./feature/notesSlice";
+import cartSlice from "./feature/cartSlice";
 
 const persistConfig = {
     key: 'root',
@@ -12,7 +13,8 @@ const persistConfig = {
 
 const reducer = combineReducers({
     counter: counterSlice.reducer,
-    notes: notesSlice.reducer
+    notes: notesSlice.reducer,
+    cart: cartSlice.reducer
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

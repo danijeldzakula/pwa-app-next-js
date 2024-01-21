@@ -46,7 +46,7 @@ export function Row({ className, children }: ContentProps) {
 }
 
 export function Container({ className, children }: ContentProps) {
-    return <div className={cn('contain', className)}>{children}</div>;
+    return <div className={cn('container mx-auto px-4', className)}>{children}</div>;
 }
 
 export function Div({ className, children }: ContentProps) {

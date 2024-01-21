@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { StoreProvider } from '@/utils/redux/StoreProvider';
 import { Main } from '@/content/Content';
-import Header from '@/components/footer/Header';
-import Footer from '@/components/header/Footer';
+import Header from '@/components/header/Header';
+import Footer from '@/components/footer/Footer';
 import { Inter } from 'next/font/google';
 import '@/styles/globals.css';
 
