@@ -55,7 +55,7 @@ export default function Button() {
     const [showCart, setShowCart] = useState(() => {
         if (HAS_WINDOW) {
             const hasShow = LocalStorageHandler.get(CART_INDICATOR_STORAGE_KEY);
-            return hasShow !== null ? hasShow : false;
+            return hasShow !== null || hasShow !== false ? hasShow : false;
         }
 
         return false;
@@ -89,9 +89,12 @@ export default function Button() {
 
 
     useEffect(() => {
-        if (sidebar && cart && cart.length < 1) {
+        if (cart && cart.length < 1) {
             handleToggleShowCart(false);
-            onToggle(false);
+
+            if (sidebar) {
+                onToggle(false);
+            }
         }
     }, [cart, sidebar, handleToggleShowCart, onToggle]);
 
@@ -212,8 +215,10 @@ function ToggleCart({ data, onToggle }: ToggleCartState) {
         return className;
     }, [data]);
 
+    const isDisabled = data && data.length < 1 ? true : false;
+
     return (
-        <button onClick={() => onToggle(true)} type='button' className='flex gap-1 relative items-center bg-blue-500 px-4 rounded-3xl shadow-lg text-xl text-white'>
+        <button disabled={isDisabled} onClick={() => onToggle(true)} type='button' className={cn('flex gap-1 relative items-center bg-blue-500 px-4 rounded-3xl shadow-lg text-xl text-white', isDisabled ? 'opacity-50 cursor-not-allowed' : '')}>
             <TotalAmount cart={data} />
             <span>Cart</span>
             <NonSSR>
@@ -254,6 +259,7 @@ type SidebarState = {
 function Sidebar({ open, onClose, data, handleActions }: SidebarState) {
     const isOpen = open ? 'translate-x-0' : 'translate-x-full';
     const isBackdrop = open ? 'opacity-100 visible' : 'opacity-0 invisible';
+    const reverseData = [...data].toReversed();
 
     return (
         <>
@@ -261,7 +267,7 @@ function Sidebar({ open, onClose, data, handleActions }: SidebarState) {
                 <header className='w-full h-12 border-b-[1px]'>
                     <button onClick={() => onClose(false)} type='button'>Close</button>
                 </header>
-                <Cart data={data} handleActions={handleActions} />
+                <Cart data={reverseData} handleActions={handleActions} />
             </aside >
 
             <div onClick={() => onClose(false)} className={cn('fixed inset-0 z-40 bg-zinc-900/50 transition-all duration-300', isBackdrop)} />
@@ -290,15 +296,16 @@ function Cart({ data, handleActions }: CartState) {
             return <p className='text-center w-full text-zinc-600 p-6'>Your cart is empty!</p>
         }
 
-        return data.map((product, idx) => {
-            const index = idx + 1;
-            const count = index.toString();
+        return data.map((product) => {
+            const color = product.color;
 
             return (
-                <div className='flex justify-between items-center w-full p-4 gap-4 odd:bg-white even:bg-zinc-100' key={product._id}>
+                <div className='flex justify-between items-center w-full p-4 gap-4 odd:bg-zinc-100 even:bg-white' key={product._id}>
                     <div className='flex items-center gap-4'>
+                        <div className={cn('w-12 h-12 rounded-md', color)} />
+
                         <div>
-                            <h3 className='text-xl text-zinc-600'>{count}. {product.title}</h3>
+                            <h3 className='text-xl text-zinc-600'>{product.title}</h3>
                             <small>{productPrice(product.qty, product.price)}</small>
                         </div>
 
@@ -309,7 +316,7 @@ function Cart({ data, handleActions }: CartState) {
                         </div>
                     </div>
 
-                    <button onClick={() => handleActions('del', product._id)} className='text-red-500' type='button'>Remove</button>
+                    <button onClick={() => handleActions('del', product._id)} className='text-red-500 font-medium' type='button'>Remove</button>
                 </div>
             )
         })
@@ -370,7 +377,7 @@ function CartIndicator({ open, onClose, item }: CartIndicatorState) {
     }, [item]);
 
     return (
-        <div className={cn('fixed w-full left-0 bottom-0 right-0 h-16 bg-white/50 transition-all duration-300 backdrop-blur-md border-t-[1px] z-30', hasShow)}>
+        <div className={cn('fixed w-full left-0 bottom-0 right-0 h-16 bg-white/75 transition-all duration-300 backdrop-blur-md border-t-[1px] z-30', hasShow)}>
             <Container className='flex justify-between items-center h-full'>
                 {renderProduct()}
                 <button className='text-blue-500 font-medium' onClick={() => onClose(false)} type='button'>Close</button>

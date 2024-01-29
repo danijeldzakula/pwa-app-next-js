@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply overflow-y-scroll;
+}
+
 main {
-  @apply py-4
+  @apply py-4;
 }
