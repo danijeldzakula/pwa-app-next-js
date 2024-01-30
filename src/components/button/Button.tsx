@@ -215,10 +215,13 @@ function ToggleCart({ data, onToggle }: ToggleCartState) {
         return className;
     }, [data]);
 
-    const isDisabled = data && data.length < 1 ? true : false;
+    const isDisabled = useMemo(() => {
+        const isDisabled = data && data.length < 1 ? true : false;
+        return isDisabled;
+    }, [data]);
 
     return (
-        <button disabled={isDisabled} onClick={() => onToggle(true)} type='button' className={cn('flex gap-1 relative items-center bg-blue-500 px-4 rounded-3xl shadow-lg text-xl text-white', isDisabled ? 'opacity-50 cursor-not-allowed' : '')}>
+        <button disabled={isDisabled} onClick={() => onToggle(true)} type='button' className={cn('flex gap-1 relative items-center bg-blue-500 px-4 rounded-3xl shadow-lg text-xl text-white disabled:cursor-not-allowed disabled:opacity-50')}>
             <TotalAmount cart={data} />
             <span>Cart</span>
             <NonSSR>
