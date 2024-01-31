@@ -27,7 +27,7 @@ export default function Section() {
             params.delete(type);
         }
 
-        router.replace(`${pathname}?${params.toString()}`);
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     }
 
     const handleClear = () => {
@@ -36,6 +36,7 @@ export default function Section() {
 
     return (
         <div>
+            <div className='h-screen'></div>
             <div className='flex justify-between'>
                 <button onClick={handleClear} type="button">Clear all</button>
                 <DatePicker onClick={onChange} value={date} />
