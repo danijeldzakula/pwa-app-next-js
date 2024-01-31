@@ -7,7 +7,7 @@ type DatePickerState = {
     onClick: (type: string, value: string) => void;
 }
 
-export default function DatePicker({ value, onClick } : DatePickerState) {
+export default function DateFilter({ value, onClick } : DatePickerState) {
     const isSelected = (val: string) => {
         if (val === value) {
             return 'bg-black text-white';

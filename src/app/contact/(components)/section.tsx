@@ -2,8 +2,9 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Amount from "@/components/filters/amount";
-import DatePicker from "@/components/filters/date-picker";
+import DateFilter from "@/components/filters/date-filter";
 import Pagination from "@/components/filters/pagination";
+import DatePicker from '@/components/date-picker/DatePicker';
 
 /**
  * Query params setter of javascript 
@@ -36,10 +37,13 @@ export default function Section() {
 
     return (
         <div>
-            <div className='h-screen'></div>
-            <div className='flex justify-between'>
+            <div className='h-screen grid items-center justify-center'>
+                <DatePicker className='' />
+            </div>
+
+            <div className='flex justify-between mt-8'>
                 <button onClick={handleClear} type="button">Clear all</button>
-                <DatePicker onClick={onChange} value={date} />
+                <DateFilter onClick={onChange} value={date} />
             </div>
 
             <div className="py-8 my-4"></div>
